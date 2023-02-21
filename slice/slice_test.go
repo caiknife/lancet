@@ -377,7 +377,7 @@ func TestDeleteAt(t *testing.T) {
 }
 
 func TestDrop(t *testing.T) {
-	assert := internal.NewAssert(t, "TestInterfaceSlice")
+	assert := internal.NewAssert(t, "TestDrop")
 
 	assert.Equal([]int{}, Drop([]int{}, 0))
 	assert.Equal([]int{}, Drop([]int{}, 1))
@@ -388,9 +388,64 @@ func TestDrop(t *testing.T) {
 	assert.Equal([]int{}, Drop([]int{1, 2, 3, 4, 5}, 5))
 	assert.Equal([]int{}, Drop([]int{1, 2, 3, 4, 5}, 6))
 
-	assert.Equal([]int{1, 2, 3, 4}, Drop([]int{1, 2, 3, 4, 5}, -1))
-	assert.Equal([]int{}, Drop([]int{1, 2, 3, 4, 5}, -6))
-	assert.Equal([]int{}, Drop([]int{1, 2, 3, 4, 5}, -6))
+	assert.Equal([]int{1, 2, 3, 4, 5}, Drop([]int{1, 2, 3, 4, 5}, -1))
+}
+
+func TestDropRight(t *testing.T) {
+	assert := internal.NewAssert(t, "TestDropRight")
+
+	assert.Equal([]int{}, DropRight([]int{}, 0))
+	assert.Equal([]int{}, DropRight([]int{}, 1))
+	assert.Equal([]int{}, DropRight([]int{}, -1))
+
+	assert.Equal([]int{1, 2, 3, 4, 5}, DropRight([]int{1, 2, 3, 4, 5}, 0))
+	assert.Equal([]int{1, 2, 3, 4}, DropRight([]int{1, 2, 3, 4, 5}, 1))
+	assert.Equal([]int{}, DropRight([]int{1, 2, 3, 4, 5}, 5))
+	assert.Equal([]int{}, DropRight([]int{1, 2, 3, 4, 5}, 6))
+
+	assert.Equal([]int{1, 2, 3, 4, 5}, DropRight([]int{1, 2, 3, 4, 5}, -1))
+}
+
+func TestDropWhile(t *testing.T) {
+	assert := internal.NewAssert(t, "TestDropWhile")
+
+	numbers := []int{1, 2, 3, 4, 5}
+
+	r1 := DropWhile(numbers, func(n int) bool {
+		return n != 2
+	})
+	assert.Equal([]int{2, 3, 4, 5}, r1)
+
+	r2 := DropWhile(numbers, func(n int) bool {
+		return true
+	})
+	assert.Equal([]int{}, r2)
+
+	r3 := DropWhile(numbers, func(n int) bool {
+		return n == 0
+	})
+	assert.Equal([]int{1, 2, 3, 4, 5}, r3)
+}
+
+func TestDropRightWhile(t *testing.T) {
+	assert := internal.NewAssert(t, "TestDropRightWhile")
+
+	numbers := []int{1, 2, 3, 4, 5}
+
+	r1 := DropRightWhile(numbers, func(n int) bool {
+		return n != 2
+	})
+	assert.Equal([]int{1, 2}, r1)
+
+	r2 := DropRightWhile(numbers, func(n int) bool {
+		return true
+	})
+	assert.Equal([]int{}, r2)
+
+	r3 := DropRightWhile(numbers, func(n int) bool {
+		return n == 0
+	})
+	assert.Equal([]int{1, 2, 3, 4, 5}, r3)
 }
 
 func TestInsertAt(t *testing.T) {
@@ -546,6 +601,46 @@ func TestDifferenceBy(t *testing.T) {
 		return v + 1
 	}
 	assert.Equal([]int{1, 2}, DifferenceBy(s1, s2, addOne))
+}
+
+func TestIsAscending(t *testing.T) {
+	assert := internal.NewAssert(t, "TestIsAscending")
+
+	assert.Equal(true, IsAscending([]int{1, 2, 3, 4, 5}))
+	assert.Equal(false, IsAscending([]int{5, 4, 3, 2, 1}))
+	assert.Equal(false, IsAscending([]int{2, 1, 3, 4, 5}))
+}
+
+func TestIsDescending(t *testing.T) {
+	assert := internal.NewAssert(t, "TestIsDescending")
+
+	assert.Equal(true, IsDescending([]int{5, 4, 3, 2, 1}))
+	assert.Equal(false, IsDescending([]int{1, 2, 3, 4, 5}))
+	assert.Equal(false, IsDescending([]int{2, 1, 3, 4, 5}))
+}
+
+func TestIsSorted(t *testing.T) {
+	assert := internal.NewAssert(t, "TestIsSorted")
+
+	assert.Equal(true, IsSorted([]int{5, 4, 3, 2, 1}))
+	assert.Equal(true, IsSorted([]int{1, 2, 3, 4, 5}))
+	assert.Equal(false, IsSorted([]int{2, 1, 3, 4, 5}))
+}
+
+func TestIsSortedByKey(t *testing.T) {
+	assert := internal.NewAssert(t, "TestIsSortedByKey")
+
+	assert.Equal(true, IsSortedByKey([]string{"a", "ab", "abc"}, func(s string) int {
+		return len(s)
+	}))
+
+	assert.Equal(true, IsSortedByKey([]string{"abc", "ab", "a"}, func(s string) int {
+		return len(s)
+	}))
+
+	assert.Equal(false, IsSortedByKey([]string{"abc", "a", "ab"}, func(s string) int {
+		return len(s)
+	}))
 }
 
 func TestSort(t *testing.T) {

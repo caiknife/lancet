@@ -4,7 +4,7 @@
 <br/>
 
 ![Go version](https://img.shields.io/badge/go-%3E%3Dv1.18-9cf)
-[![Release](https://img.shields.io/badge/release-2.1.13-green.svg)](https://github.com/duke-git/lancet/releases)
+[![Release](https://img.shields.io/badge/release-2.1.15-green.svg)](https://github.com/duke-git/lancet/releases)
 [![GoDoc](https://godoc.org/github.com/duke-git/lancet/v2?status.svg)](https://pkg.go.dev/github.com/duke-git/lancet/v2)
 [![Go Report Card](https://goreportcard.com/badge/github.com/duke-git/lancet/v2)](https://goreportcard.com/report/github.com/duke-git/lancet/v2)
 [![test](https://github.com/duke-git/lancet/actions/workflows/codecov.yml/badge.svg?branch=main&event=push)](https://github.com/duke-git/lancet/actions/workflows/codecov.yml)
@@ -23,7 +23,7 @@
 ## 特性
 
 -   👏 全面、高效、可复用
--   💪 300+常用 go 工具函数，支持 string、slice、datetime、net、crypt...
+-   💪 400+常用 go 工具函数，支持 string、slice、datetime、net、crypt...
 -   💅 只依赖 go 标准库
 -   🌍 所有导出函数单元测试覆盖率 100%
 
@@ -37,10 +37,10 @@
 go get github.com/duke-git/lancet/v2 //安装v2最新版本v2.x.x
 ```
 
-2. <b>使用 go1.18 以下版本的用户，必须安装 v1.x.x。目前最新的 v1 版本是 v1.3.5。</b>
+2. <b>使用 go1.18 以下版本的用户，必须安装 v1.x.x。目前最新的 v1 版本是 v1.3.6。</b>
 
 ```go
-go get github.com/duke-git/lancet@v1.3.5 // 使用go1.18以下版本, 必须安装v1.x.x版本
+go get github.com/duke-git/lancet@v1.3.6 // 使用go1.18以下版本, 必须安装v1.x.x版本
 ```
 
 ## 用法
@@ -51,7 +51,7 @@ lancet 是以包的结构组织代码的，使用时需要导入相应的包名�
 import "github.com/duke-git/lancet/v2/strutil"
 ```
 
-## 例子
+## 示例
 
 此处以字符串工具函数 Reverse（逆序字符串）为例，需要导入 strutil 包:
 
@@ -245,6 +245,11 @@ import "github.com/duke-git/lancet/v2/convertor"
 -   **<big>DecodeByte</big>** : 解码字节切片到目标对象，目标对象需要传入一个指针实例。
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/convertor_zh-CN.md#DecodeByte)]
     [[play](https://go.dev/play/p/zI6xsmuQRbn)]
+-   **<big>DeepClone</big>** : 创建一个传入值的深拷贝, 无法克隆结构体的非导出字段。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/convertor_zh-CN.md#DeepClone)]
+    [[play](https://go.dev/play/p/j4DP5dquxnk)]
+
+
 
 ### 5. cryptor 加密包支持数据加密和解密，获取 md5，hash 值。支持 base64, md5, hmac, aes, des, rsa。
 
@@ -839,9 +844,18 @@ import "github.com/duke-git/lancet/v2/slice"
 -   **<big>DeleteAt</big>** : 删除切片中指定开始索引到结束索引的元素。
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#DeleteAt)]
     [[play](https://go.dev/play/p/pJ-d6MUWcvK)]
--   **<big>Drop</big>** : 创建一个切片，当n > 0时从开头删除n个元素，或者当n < 0时从结尾删除n个元素。
+-   **<big>Drop</big>** : 从切片头部删除n个元素。
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#Drop)]
-    [[play](https://go.dev/play/p/pJ-d6MUWcvK)]
+    [[play](https://go.dev/play/p/jnPO2yQsT8H)]
+-   **<big>DropRight</big>** : 从切片尾部删除n个元素。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#DropRight)]
+    [[play](https://go.dev/play/p/8bcXvywZezG)]
+-   **<big>DropWhile</big>** : 从切片的头部删除n个元素，这个n个元素满足predicate函数返回true。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#DropWhile)]
+    [[play](https://go.dev/play/p/4rt252UV_qs)]
+-   **<big>DropRightWhile</big>** : 从切片的尾部删除n个元素，这个n个元素满足predicate函数返回true。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#DropRightWhile)]
+    [[play](https://go.dev/play/p/6wyK3zMY56e)]
 -   **<big>Equal</big>** : 检查两个切片是否相等，相等条件：切片长度相同，元素顺序和值都相同。
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#Equal)]
     [[play](https://go.dev/play/p/WcRQJ37ifPa)]
@@ -917,6 +931,18 @@ import "github.com/duke-git/lancet/v2/slice"
 -   **<big>Shuffle</big>** : 随机打乱切片中的元素顺序。
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#Shuffle)]
     [[play](https://go.dev/play/p/YHvhnWGU3Ge)]
+-   **<big>IsAscending</big>** : 检查切片元素是否按升序排列。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#IsAscending)]
+    [[play](https://go.dev/play/p/9CtsFjet4SH)]
+-   **<big>IsDescending</big>** : 检查切片元素是否按降序排列。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#IsDescending)]
+    [[play](https://go.dev/play/p/U_LljFXma14)]
+-   **<big>IsSorted</big>** : 检查切片元素是否是有序的（升序或降序）。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#IsSorted)]
+    [[play](https://go.dev/play/p/nCE8wPLwSA-)]
+-   **<big>IsSortedByKey</big>** : 通过iteratee函数，检查切片元素是否是有序的。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#IsSortedByKey)]
+    [[play](https://go.dev/play/p/tUoGB7DOHI4)]
 -   **<big>Sort</big>** : 对任何有序类型（数字或字符串）的切片进行排序，使用快速排序算法。
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice_zh-CN.md#Sort)]
     [[play](https://go.dev/play/p/V9AVjzf_4Fk)]
@@ -1171,11 +1197,46 @@ import "github.com/duke-git/lancet/v2/xerror"
 
 #### 函数列表:
 
-
--   **<big>Unwrap</big>** : 检查error, 如果err为nil则展开，则它返回一个有效值，如果err不是nil则Unwrap使用err发生panic。
+-   **<big>New</big>** : 创建XError对象实例。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#New)]
+    [[play](https://go.dev/play/p/w4oWZts7q7f)]
+-   **<big>Wrap</big>** : 根据error对象创建XError对象实例，可添加message。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#Wrap)]
+    [[play](https://go.dev/play/p/5385qT2dCi4)]
+-   **<big>Unwrap</big>** : 从error对象中解构出XError。
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#Unwrap)]
-    [[play](https://go.dev/play/p/w84d7Mb3Afk)]
-
+    [[play](https://go.dev/play/p/LKMLep723tu)]
+-   **<big>XError_Wrap</big>** : 创建新的XError对象并将消息和id复制到新的对象中。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_Wrap)]
+    [[play](https://go.dev/play/p/5385qT2dCi4)]
+-   **<big>XError_Unwrap</big>** : 解构XEerror为error对象。适配github.com/pkg/errors。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_Unwrap)]
+    [[play](https://go.dev/play/p/VUXJ8BST4c6)]
+-   **<big>XError_With</big>** : 添加与XError对象的键和值。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_With)]
+    [[play](https://go.dev/play/p/ow8UISXX_Dp)]
+-   **<big>XError_Id</big>** : 设置XError对象的id。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_Id)]
+    [[play](https://go.dev/play/p/X6HBlsy58U9)]
+-   **<big>XError_Is</big>** : 检查目标error是否为XError，两个错误中的error.id是否匹配。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_Is)]
+    [[play](https://go.dev/play/p/X6HBlsy58U9)]
+-   **<big>XError_Values</big>** : 返回由With设置的键和值的映射。将合并所有XError键和值。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_Values)]
+    [[play](https://go.dev/play/p/ow8UISXX_Dp)]
+-   **<big>XError_StackTrace</big>** : 返回与pkg/error兼容的堆栈信息。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_StackTrace)]
+    [[play](https://go.dev/play/p/6FAvSQpa7pc)]
+-   **<big>XError_Info</big>** : 返回可打印的XError对象信息。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_Info)]
+    [[play](https://go.dev/play/p/1ZX0ME1F-Jb)]
+-   **<big>XError_Error</big>** : 实现标准库的error接口。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#XError_Error)]
+    [[play](https://go.dev/play/p/w4oWZts7q7f)]
+-   **<big>TryUnwrap</big>** : 检查error, 如果err为nil则展开，则它返回一个有效值，如果err不是nil则Unwrap使用err发生panic。
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror_zh-CN.md#TryUnwrap)]
+    [[play](https://go.dev/play/p/acyZVkNZEeW)]
+    
 
 ## 如何贡献代码
 

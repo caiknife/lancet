@@ -4,7 +4,7 @@
 <br/>
 
 ![Go version](https://img.shields.io/badge/go-%3E%3Dv1.18-9cf)
-[![Release](https://img.shields.io/badge/release-2.1.13-green.svg)](https://github.com/duke-git/lancet/releases)
+[![Release](https://img.shields.io/badge/release-2.1.15-green.svg)](https://github.com/duke-git/lancet/releases)
 [![GoDoc](https://godoc.org/github.com/duke-git/lancet/v2?status.svg)](https://pkg.go.dev/github.com/duke-git/lancet/v2)
 [![Go Report Card](https://goreportcard.com/badge/github.com/duke-git/lancet/v2)](https://goreportcard.com/report/github.com/duke-git/lancet/v2)
 [![test](https://github.com/duke-git/lancet/actions/workflows/codecov.yml/badge.svg?branch=main&event=push)](https://github.com/duke-git/lancet/actions/workflows/codecov.yml)
@@ -24,7 +24,7 @@ English | [简体中文](./README_zh-CN.md)
 ## Feature
 
 -   👏 Comprehensive, efficient and reusable.
--   💪 300+ go util functions, support string, slice, datetime, net, crypt...
+-   💪 400+ go util functions, support string, slice, datetime, net, crypt...
 -   💅 Only depend on the go standard library.
 -   🌍 Unit test for every exported function.
 
@@ -38,10 +38,10 @@ English | [简体中文](./README_zh-CN.md)
 go get github.com/duke-git/lancet/v2 // will install latest version of v2.x.x
 ```
 
-2. <b>For users who use version below go1.18, you should install v1.x.x. The latest of v1.x.x is v1.3.5. </b>
+2. <b>For users who use version below go1.18, you should install v1.x.x. The latest of v1.x.x is v1.3.6. </b>
 
 ```go
-go get github.com/duke-git/lancet@v1.3.5 // below go1.18, install latest version of v1.x.x
+go get github.com/duke-git/lancet@v1.3.6 // below go1.18, install latest version of v1.x.x
 ```
 
 ## Usage
@@ -246,6 +246,10 @@ import "github.com/duke-git/lancet/v2/convertor"
 -   **<big>DecodeByte</big>** : decode byte slice data to target object.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/convertor.md#DecodeByte)]
     [[play](https://go.dev/play/p/zI6xsmuQRbn)]
+-   **<big>DeepClone</big>** : creates a deep copy of passed item, can't clone unexported field of struct.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/convertor.md#DeepClone)]
+    [[play](https://go.dev/play/p/j4DP5dquxnk)]
+
 
 ### 5. Cryptor package is for data encryption and decryption.
 
@@ -832,9 +836,18 @@ import "github.com/duke-git/lancet/v2/slice"
 -   **<big>DeleteAt</big>** : delete the element of slice from specific start index to end index - 1.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#DeleteAt)]
     [[play](https://go.dev/play/p/pJ-d6MUWcvK)]
--   **<big>Drop</big>** : creates a slice with `n` elements dropped from the beginning when n > 0, or `n` elements dropped from the ending when n < 0.
+-   **<big>Drop</big>** : drop n elements from the start of a slice.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#Drop)]
-    [[play](https://go.dev/play/p/pJ-d6MUWcvK)]
+    [[play](https://go.dev/play/p/jnPO2yQsT8H)]
+-   **<big>DropRight</big>** : drop n elements from the end of a slice.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#DropRight)]
+    [[play](https://go.dev/play/p/8bcXvywZezG)]
+-   **<big>DropWhile</big>** : drop n elements from the start of a slice while predicate function returns true.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#DropWhile)]
+    [[play](https://go.dev/play/p/4rt252UV_qs)]
+-   **<big>DropRightWhile</big>** : drop n elements from the end of a slice while predicate function returns true.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#DropRightWhile)]
+    [[play](https://go.dev/play/p/6wyK3zMY56e)]
 -   **<big>Equal</big>** : checks if two slices are equal: the same length and all elements' order and value are equal.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#Equal)]
     [[play](https://go.dev/play/p/WcRQJ37ifPa)]
@@ -910,6 +923,18 @@ import "github.com/duke-git/lancet/v2/slice"
 -   **<big>Shuffle</big>** : shuffle the slice.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#Shuffle)]
     [[play](https://go.dev/play/p/YHvhnWGU3Ge)]
+-   **<big>IsAscending</big>** : Checks if a slice is ascending order.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#IsAscending)]
+    [[play](https://go.dev/play/p/9CtsFjet4SH)]
+-   **<big>IsDescending</big>** : Checks if a slice is descending order.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#IsDescending)]
+    [[play](https://go.dev/play/p/U_LljFXma14)]
+-   **<big>IsSorted</big>** : Checks if a slice is sorted (ascending or descending).
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#IsSorted)]
+    [[play](https://go.dev/play/p/nCE8wPLwSA-)]
+-   **<big>IsSortedByKey</big>** : Checks if a slice is sorted by iteratee function.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#IsSortedByKey)]
+    [[play](https://go.dev/play/p/tUoGB7DOHI4)]
 -   **<big>Sort</big>** : sorts a slice of any ordered type(number or string).
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#Sort)]
     [[play](https://go.dev/play/p/V9AVjzf_4Fk)]
@@ -1160,10 +1185,45 @@ import "github.com/duke-git/lancet/v2/xerror"
 ```
 
 #### Function list:
-
--   **<big>Unwrap</big>** : check if err is nil then it returns a valid value. If err is not nil, Unwrap panics with err.
+-   **<big>New</big>** : creates a new XError pointer instance with message.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#New)]
+    [[play](https://go.dev/play/p/w4oWZts7q7f)]
+-   **<big>Wrap</big>** : creates a new XError pointer instance based on error object, and add message.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#Wrap)]
+    [[play](https://go.dev/play/p/5385qT2dCi4)]
+-   **<big>Unwrap</big>** : returns unwrapped XError from err by errors.As. If no XError, returns nil.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#Unwrap)]
-    [[play](https://go.dev/play/p/w84d7Mb3Afk)]
+    [[play](https://go.dev/play/p/LKMLep723tu)]
+-   **<big>XError_Wrap</big>** : creates a new XError and copy message and id to new one.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Wrap)]
+    [[play](https://go.dev/play/p/5385qT2dCi4)]
+-   **<big>XError_Unwrap</big>** : Compatible with github.com/pkg/errors.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Unwrap)]
+    [[play](https://go.dev/play/p/VUXJ8BST4c6)]
+-   **<big>XError_With</big>** : adds key and value related to the XError object.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_With)]
+    [[play](https://go.dev/play/p/ow8UISXX_Dp)]
+-   **<big>XError_Id</big>** : sets XError object id to check equality in XError.Is.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Id)]
+    [[play](https://go.dev/play/p/X6HBlsy58U9)]
+-   **<big>XError_Is</big>** : checks if target error is XError and Error.id of two errors are matched.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Is)]
+    [[play](https://go.dev/play/p/X6HBlsy58U9)]
+-   **<big>XError_Values</big>** : returns map of key and value that is set by XError.With function. 
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Values)]
+    [[play](https://go.dev/play/p/ow8UISXX_Dp)]
+-   **<big>XError_StackTrace</big>** : returns stack trace which is compatible with pkg/errors.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_StackTrace)]
+    [[play](https://go.dev/play/p/6FAvSQpa7pc)]
+-   **<big>XError_Info</big>** : returns information of xerror, which can be printed.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Info)]
+    [[play](https://go.dev/play/p/1ZX0ME1F-Jb)]
+-   **<big>XError_Error</big>** : implements standard error interface.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Error)]
+    [[play](https://go.dev/play/p/w4oWZts7q7f)]
+-   **<big>TryUnwrap</big>** : check if err is nil then it returns a valid value. If err is not nil, TryUnwrap panics with err.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#TryUnwrap)]
+    [[play](https://go.dev/play/p/acyZVkNZEeW)]
 
 
 ## How to Contribute

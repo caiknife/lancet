@@ -6,7 +6,6 @@ package slice
 
 import (
 	"fmt"
-	"math"
 	"math/rand"
 	"reflect"
 	"sort"
@@ -559,24 +558,72 @@ func DeleteAt[T any](slice []T, start int, end ...int) []T {
 	return slice
 }
 
-// Drop creates a slice with `n` elements dropped from the beginning when n > 0, or `n` elements dropped from the ending when n < 0.
-// Play: https://go.dev/play/p/pJ-d6MUWcvK
+// Drop drop n elements from the start of a slice.
+// Play: https://go.dev/play/p/jnPO2yQsT8H
 func Drop[T any](slice []T, n int) []T {
 	size := len(slice)
 
-	if size == 0 || n == 0 {
-		return slice
-	}
-
-	if math.Abs(float64(n)) >= float64(size) {
+	if size <= n {
 		return []T{}
 	}
 
-	if n < 0 {
-		return slice[0 : size+n]
+	if n <= 0 {
+		return slice
 	}
 
-	return slice[n:size]
+	result := make([]T, 0, size-n)
+
+	return append(result, slice[n:]...)
+}
+
+// DropRight drop n elements from the end of a slice.
+// Play: https://go.dev/play/p/8bcXvywZezG
+func DropRight[T any](slice []T, n int) []T {
+	size := len(slice)
+
+	if size <= n {
+		return []T{}
+	}
+
+	if n <= 0 {
+		return slice
+	}
+
+	result := make([]T, 0, size-n)
+
+	return append(result, slice[:size-n]...)
+}
+
+// DropWhile drop n elements from the start of a slice while predicate function returns true.
+// Play: https://go.dev/play/p/4rt252UV_qs
+func DropWhile[T any](slice []T, predicate func(item T) bool) []T {
+	i := 0
+
+	for ; i < len(slice); i++ {
+		if !predicate(slice[i]) {
+			break
+		}
+	}
+
+	result := make([]T, 0, len(slice)-i)
+
+	return append(result, slice[i:]...)
+}
+
+// DropRightWhile drop n elements from the end of a slice while predicate function returns true.
+// Play: https://go.dev/play/p/6wyK3zMY56e
+func DropRightWhile[T any](slice []T, predicate func(item T) bool) []T {
+	i := len(slice) - 1
+
+	for ; i >= 0; i-- {
+		if !predicate(slice[i]) {
+			break
+		}
+	}
+
+	result := make([]T, 0, i+1)
+
+	return append(result, slice[:i+1]...)
 }
 
 // InsertAt insert the value or other slice into slice at index.
@@ -781,6 +828,64 @@ func Shuffle[T any](slice []T) []T {
 	})
 
 	return slice
+}
+
+// IsAscending checks if a slice is ascending order.
+// Play: https://go.dev/play/p/9CtsFjet4SH
+func IsAscending[T constraints.Ordered](slice []T) bool {
+	for i := 1; i < len(slice); i++ {
+		if slice[i-1] > slice[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// IsDescending checks if a slice is descending order.
+// Play: https://go.dev/play/p/U_LljFXma14
+func IsDescending[T constraints.Ordered](slice []T) bool {
+	for i := 1; i < len(slice); i++ {
+		if slice[i-1] < slice[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// IsSorted checks if a slice is sorted(ascending or descending).
+// Play: https://go.dev/play/p/nCE8wPLwSA-
+func IsSorted[T constraints.Ordered](slice []T) bool {
+	return IsAscending(slice) || IsDescending(slice)
+}
+
+// IsSortedByKey checks if a slice is sorted by iteratee function.
+// Play: https://go.dev/play/p/tUoGB7DOHI4
+func IsSortedByKey[T any, K constraints.Ordered](slice []T, iteratee func(item T) K) bool {
+	size := len(slice)
+
+	isAscending := func(data []T) bool {
+		for i := 0; i < size-1; i++ {
+			if iteratee(data[i]) > iteratee(data[i+1]) {
+				return false
+			}
+		}
+
+		return true
+	}
+
+	isDescending := func(data []T) bool {
+		for i := 0; i < size-1; i++ {
+			if iteratee(data[i]) < iteratee(data[i+1]) {
+				return false
+			}
+		}
+
+		return true
+	}
+
+	return isAscending(slice) || isDescending(slice)
 }
 
 // Sort sorts a slice of any ordered type(number or string), use quick sort algrithm.

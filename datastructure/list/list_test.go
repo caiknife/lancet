@@ -328,6 +328,28 @@ func TestIntersection(t *testing.T) {
 	assert.Equal(true, expected.Equal(list3))
 }
 
+func TestDifference(t *testing.T) {
+	assert := internal.NewAssert(t, "TestDifference")
+
+	list1 := NewList([]int{1, 2, 3})
+	list2 := NewList([]int{1, 2, 4})
+	expected := NewList([]int{3})
+
+	list3 := list1.Difference(list2)
+	assert.Equal(true, expected.Equal(list3))
+}
+
+func TestSymmetricDifference(t *testing.T) {
+	assert := internal.NewAssert(t, "TestSymmetricDifference")
+
+	list1 := NewList([]int{1, 2, 3})
+	list2 := NewList([]int{1, 2, 4})
+	expected := NewList([]int{3, 4})
+
+	list3 := list1.SymmetricDifference(list2)
+	assert.Equal(true, expected.Equal(list3))
+}
+
 func TestSubSlice(t *testing.T) {
 	assert := internal.NewAssert(t, "TestSubSlice")
 
@@ -356,4 +378,85 @@ func TestDeleteIf(t *testing.T) {
 	count = list.DeleteIf(func(a int) bool { return a == 5 })
 	assert.Equal([]int{2, 3, 4}, list.Data())
 	assert.Equal(0, count)
+}
+
+func TestForEach(t *testing.T) {
+	assert := internal.NewAssert(t, "TestForEach")
+
+	list := NewList([]int{1, 2, 3, 4})
+
+	rs := make([]int, 0)
+	list.ForEach(func(i int) {
+		rs = append(rs, i)
+	})
+
+	assert.Equal([]int{1, 2, 3, 4}, rs)
+}
+
+func TestRetainAll(t *testing.T) {
+	assert := internal.NewAssert(t, "TestRetainAll")
+
+	list := NewList([]int{1, 2, 3, 4})
+	list1 := NewList([]int{1, 2, 3, 4})
+	list2 := NewList([]int{1, 2, 3, 4})
+
+	retain := NewList([]int{1, 2})
+	retain1 := NewList([]int{2, 3})
+	retain2 := NewList([]int{1, 2, 5})
+
+	list.RetainAll(retain)
+	list1.RetainAll(retain1)
+	list2.RetainAll(retain2)
+
+	assert.Equal([]int{1, 2}, list.Data())
+	assert.Equal([]int{2, 3}, list1.Data())
+	assert.Equal([]int{1, 2}, list2.Data())
+}
+
+func TestDeleteAll(t *testing.T) {
+	assert := internal.NewAssert(t, "TestDeleteAll")
+
+	list := NewList([]int{1, 2, 3, 4})
+	list1 := NewList([]int{1, 2, 3, 4})
+	list2 := NewList([]int{1, 2, 3, 4})
+
+	del := NewList([]int{1})
+	del1 := NewList([]int{2, 3})
+	del2 := NewList([]int{1, 2, 5})
+
+	list.DeleteAll(del)
+	list1.DeleteAll(del1)
+	list2.DeleteAll(del2)
+	assert.Equal([]int{2, 3, 4}, list.Data())
+	assert.Equal([]int{1, 4}, list1.Data())
+	assert.Equal([]int{3, 4}, list2.Data())
+}
+
+func TestIterator(t *testing.T) {
+	assert := internal.NewAssert(t, "TestIterator")
+
+	list := NewList([]int{1, 2, 3, 4})
+
+	iterator := list.Iterator()
+
+	rs := make([]int, 0)
+	for iterator.HasNext() {
+		item, _ := iterator.Next()
+		rs = append(rs, item)
+	}
+
+	assert.Equal([]int{1, 2, 3, 4}, rs)
+}
+
+func TestListToMap(t *testing.T) {
+	assert := internal.NewAssert(t, "ListToMap")
+
+	list := NewList([]int{1, 2, 3, 4})
+
+	result := ListToMap(list, func(n int) (int, bool) {
+		return n, n > 1
+	})
+	expected := map[int]bool{1: false, 2: true, 3: true, 4: true}
+
+	assert.Equal(expected, result)
 }

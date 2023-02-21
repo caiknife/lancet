@@ -35,6 +35,9 @@ import (
 -   [DifferenceWith](#DifferenceWith)
 -   [DeleteAt](#DeleteAt)
 -   [Drop](#Drop)
+-   [DropRight](#DropRight)
+-   [DropWhile](#DropWhile)
+-   [DropRightWhile](#DropRightWhile)
 -   [Every](#Every)
 -   [Equal](#Equal)
 -   [EqualWith](#EqualWith)
@@ -60,6 +63,10 @@ import (
 -   [ReplaceAll](#ReplaceAll)
 -   [Repeat](#Repeat)
 -   [Shuffle](#Shuffle)
+-   [IsAscending](#IsAscending)
+-   [IsDescending](#IsDescending)
+-   [IsSorted](#IsSorted)
+-   [IsSortedByKey](#IsSortedByKey)
 -   [Sort](#Sort)
 -   [SortBy](#SortBy)
 -   [SortByField<sup>deprecated</sup>](#SortByField)
@@ -90,7 +97,7 @@ import (
 func AppendIfAbsent[T comparable](slice []T, item T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -121,7 +128,7 @@ func main() {
 func Contain[T comparable](slice []T, target T) bool
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -152,7 +159,7 @@ func main() {
 func ContainSubSlice[T comparable](slice, subSlice []T) bool
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -183,7 +190,7 @@ func main() {
 func Chunk[T any](slice []T, size int) [][]T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -225,7 +232,7 @@ func main() {
 func Compact[T comparable](slice []T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -262,7 +269,7 @@ func main() {
 func Concat[T any](slice []T, slices ...[]T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -293,7 +300,7 @@ func main() {
 func Count[T comparable](slice []T, item T) int
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -326,7 +333,7 @@ func main() {
 func CountBy[T any](slice []T, predicate func(index int, item T) bool) int
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -360,7 +367,7 @@ func main() {
 func Difference[T comparable](slice, comparedSlice []T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -391,7 +398,7 @@ func main() {
 func DifferenceBy[T comparable](slice []T, comparedSlice []T, iteratee func(index int, item T) T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -426,7 +433,7 @@ func main() {
 func DifferenceWith[T any](slice []T, comparedSlice []T, comparator func(value, otherValue T) bool) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -461,7 +468,7 @@ func main() {
 func DeleteAt[T any](slice []T, start int, end ...int)
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -486,9 +493,10 @@ func main() {
 }
 ```
 
+
 ### <span id="Drop">Drop</span>
 
-<p>创建一个切片，当n > 0时从开头删除n个元素，或者当n < 0时从结尾删除n个元素</p>
+<p>从切片的头部删除n个元素。</p>
 
 <b>函数签名:</b>
 
@@ -496,7 +504,7 @@ func main() {
 func Drop[T any](slice []T, n int) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -506,20 +514,139 @@ import (
 
 func main() {
     result1 := slice.Drop([]string{"a", "b", "c"}, 0)
-    result2 := slice.Drop([]string{"a", "b", "c"}, 1)
-    result3 := slice.Drop([]string{"a", "b", "c"}, -1)
-    result4 := slice.Drop([]string{"a", "b", "c"}, 4)
+	result2 := slice.Drop([]string{"a", "b", "c"}, 1)
+	result3 := slice.Drop([]string{"a", "b", "c"}, -1)
+	result4 := slice.Drop([]string{"a", "b", "c"}, 4)
 
-    fmt.Println(result1)
-    fmt.Println(result2)
-    fmt.Println(result3)
-    fmt.Println(result4)
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+	fmt.Println(result4)
 
-    // Output:
-    // [a b c]
-    // [b c]
-    // [a b]
-    // []
+	// Output:
+	// [a b c]
+	// [b c]
+	// [a b c]
+	// []
+}
+```
+
+### <span id="DropRight">DropRight</span>
+
+<p>从切片的尾部删除n个元素。</p>
+
+<b>函数签名:</b>
+
+```go
+func DropRight[T any](slice []T, n int) []T
+```
+
+<b>示例:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/slice"
+)
+
+func main() {
+    result1 := slice.DropRight([]string{"a", "b", "c"}, 0)
+	result2 := slice.DropRight([]string{"a", "b", "c"}, 1)
+	result3 := slice.DropRight([]string{"a", "b", "c"}, -1)
+	result4 := slice.DropRight([]string{"a", "b", "c"}, 4)
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+	fmt.Println(result4)
+
+	// Output:
+	// [a b c]
+	// [a b]
+	// [a b c]
+	// []
+}
+```
+
+### <span id="DropWhile">DropWhile</span>
+
+<p>从切片的头部删除n个元素，这个n个元素满足predicate函数返回true。</p>
+
+<b>函数签名:</b>
+
+```go
+func DropWhile[T any](slice []T, predicate func(item T) bool) []T
+```
+
+<b>示例:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/slice"
+)
+
+func main() {
+    result1 := slice.DropWhile(numbers, func(n int) bool {
+		return n != 2
+	})
+	result2 := slice.DropWhile(numbers, func(n int) bool {
+		return true
+	})
+	result3 := slice.DropWhile(numbers, func(n int) bool {
+		return n == 0
+	})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// [2 3 4 5]
+	// []
+	// [1 2 3 4 5]
+}
+```
+
+### <span id="DropRightWhile">DropRightWhile</span>
+
+<p>从切片的尾部删除n个元素，这个n个元素满足predicate函数返回true。</p>
+
+<b>函数签名:</b>
+
+```go
+func DropRightWhile[T any](slice []T, predicate func(item T) bool) []T
+```
+
+<b>示例:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/slice"
+)
+
+func main() {
+    numbers := []int{1, 2, 3, 4, 5}
+
+	result1 := slice.DropRightWhile(numbers, func(n int) bool {
+		return n != 2
+	})
+	result2 := slice.DropRightWhile(numbers, func(n int) bool {
+		return true
+	})
+	result3 := slice.DropRightWhile(numbers, func(n int) bool {
+		return n == 0
+	})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// [1 2]
+	// []
+	// [1 2 3 4 5]
 }
 ```
 
@@ -533,7 +660,7 @@ func main() {
 func Every[T any](slice []T, predicate func(index int, item T) bool) bool
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -567,7 +694,7 @@ func main() {
 func Equal[T comparable](slice1, slice2 []T) bool
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -602,7 +729,7 @@ func main() {
 func EqualWith[T, U any](slice1 []T, slice2 []U, comparator func(T, U) bool) bool
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -637,7 +764,7 @@ func main() {
 func Filter[T any](slice []T, predicate func(index int, item T) bool) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -671,7 +798,7 @@ func main() {
 func Find[T any](slice []T, predicate func(index int, item T) bool) (*T, bool)
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -707,7 +834,7 @@ func main() {
 func FindLast[T any](slice []T, predicate func(index int, item T) bool) (*T, bool)
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -743,7 +870,7 @@ func main() {
 func Flatten(slice any) any
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -773,7 +900,7 @@ func main() {
 func FlattenDeep(slice any) any
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -803,7 +930,7 @@ func main() {
 func ForEach[T any](slice []T, iteratee func(index int, item T))
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -838,7 +965,7 @@ func main() {
 func GroupBy[T any](slice []T, groupFn func(index int, item T) bool) ([]T, []T)
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -874,7 +1001,7 @@ func main() {
 func GroupWith[T any, U comparable](slice []T, iteratee func(T) U) map[U][]T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -908,7 +1035,7 @@ func main() {
 func IntSlice(slice any) []int
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -937,7 +1064,7 @@ func main() {
 func InterfaceSlice(slice any) []any
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -966,7 +1093,7 @@ func main() {
 func Intersection[T comparable](slices ...[]T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -997,7 +1124,7 @@ func main() {
 func InsertAt[T any](slice []T, index int, value any) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1037,7 +1164,7 @@ func main() {
 func IndexOf[T comparable](slice []T, item T) int
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1070,7 +1197,7 @@ func main() {
 func LastIndexOf[T comparable](slice []T, item T) int
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1103,7 +1230,7 @@ func main() {
 func Map[T any, U any](slice []T, iteratee func(index int, item T) U) []U
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1137,7 +1264,7 @@ func main() {
 func Merge[T any](slices ...[]T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1168,7 +1295,7 @@ func main() {
 func Reverse[T any](slice []T)
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1198,7 +1325,7 @@ func main() {
 func Reduce[T any](slice []T, iteratee func(index int, item1, item2 T) T, initial T) T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1232,7 +1359,7 @@ func main() {
 func Replace[T comparable](slice []T, old T, new T, n int) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1274,7 +1401,7 @@ func main() {
 func ReplaceAll[T comparable](slice []T, old T, new T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1302,7 +1429,7 @@ func main() {
 func Repeat[T any](item T, n int) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1330,7 +1457,7 @@ func main() {
 func Shuffle[T any](slice []T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1349,6 +1476,148 @@ func main() {
 }
 ```
 
+### <span id="IsAscending">IsAscending</span>
+
+<p>检查切片元素是否按升序排列。</p>
+
+<b>函数签名:</b>
+
+```go
+func IsAscending[T constraints.Ordered](slice []T) bool
+```
+
+<b>示例:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/slice"
+)
+
+func main() {
+    result1 := slice.IsAscending([]int{1, 2, 3, 4, 5})
+	result2 := slice.IsAscending([]int{5, 4, 3, 2, 1})
+	result3 := slice.IsAscending([]int{2, 1, 3, 4, 5})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// true
+	// false
+	// false
+}
+```
+
+### <span id="IsDescending">IsDescending</span>
+
+<p>检查切片元素是否按降序排列。</p>
+
+<b>函数签名:</b>
+
+```go
+func IsDescending[T constraints.Ordered](slice []T) bool
+```
+
+<b>示例:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/slice"
+)
+
+func main() {
+    result1 := slice.IsDescending([]int{5, 4, 3, 2, 1})
+	result2 := slice.IsDescending([]int{1, 2, 3, 4, 5})
+	result3 := slice.IsDescending([]int{2, 1, 3, 4, 5})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// true
+	// false
+	// false
+}
+```
+
+### <span id="IsSorted">IsSorted</span>
+
+<p>检查切片元素是否是有序的（升序或降序）。</p>
+
+<b>函数签名:</b>
+
+```go
+func IsSorted[T constraints.Ordered](slice []T) bool
+```
+
+<b>示例:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/slice"
+)
+
+func main() {
+    result1 := slice.IsSorted([]int{5, 4, 3, 2, 1})
+	result2 := slice.IsSorted([]int{1, 2, 3, 4, 5})
+	result3 := slice.IsSorted([]int{2, 1, 3, 4, 5})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// true
+	// true
+	// false
+}
+```
+
+### <span id="IsSortedByKey">IsSortedByKey</span>
+
+<p>通过iteratee函数，检查切片元素是否是有序的。</p>
+
+<b>函数签名:</b>
+
+```go
+func IsSortedByKey[T any, K constraints.Ordered](slice []T, iteratee func(item T) K) bool
+```
+
+<b>示例:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/slice"
+)
+
+func main() {
+    result1 := slice.IsSortedByKey([]string{"a", "ab", "abc"}, func(s string) int {
+		return len(s)
+	})
+	result2 := slice.IsSortedByKey([]string{"abc", "ab", "a"}, func(s string) int {
+		return len(s)
+	})
+	result3 := slice.IsSortedByKey([]string{"abc", "a", "ab"}, func(s string) int {
+		return len(s)
+	})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// true
+	// true
+	// false
+}
+```
+
 ### <span id="Sort">Sort</span>
 
 <p>对任何有序类型（数字或字符串）的切片进行排序，使用快速排序算法。 默认排序顺序为升序 (asc)，如果需要降序，请将参数 `sortOrder` 设置为 `desc`。 Ordered类型：数字（所有整数浮点数）或字符串。</p>
@@ -1359,7 +1628,7 @@ func main() {
 func Sort[T constraints.Ordered](slice []T, sortOrder ...string)
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1396,7 +1665,7 @@ func main() {
 func SortBy[T any](slice []T, less func(a, b T) bool)
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1443,7 +1712,7 @@ func main() {
 func SortByField(slice any, field string, sortType ...string) error
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1484,7 +1753,7 @@ func main() {
 func Some[T any](slice []T, predicate func(index int, item T) bool) bool
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1518,7 +1787,7 @@ func main() {
 func StringSlice(slice any) []string
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1547,7 +1816,7 @@ func main() {
 func SymmetricDifference[T comparable](slices ...[]T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1578,7 +1847,7 @@ func main() {
 func ToSlice[T any](items ...T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1606,7 +1875,7 @@ func main() {
 func ToSlicePointer[T any](items ...T) []*T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1641,7 +1910,7 @@ func main() {
 func Unique[T comparable](slice []T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1668,7 +1937,7 @@ func main() {
 func UniqueBy[T comparable](slice []T, iteratee func(item T) T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1699,7 +1968,7 @@ func main() {
 func Union[T comparable](slices ...[]T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1730,7 +1999,7 @@ func main() {
 func UnionBy[T any, V comparable](predicate func(item T) V, slices ...[]T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1763,7 +2032,7 @@ func main() {
 func UpdateAt[T any](slice []T, index int, value T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1803,7 +2072,7 @@ func main() {
 func Without[T comparable](slice []T, items ...T) []T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (
@@ -1831,7 +2100,7 @@ func main() {
 func KeyBy[T any, U comparable](slice []T, iteratee func(item T) U) map[U]T
 ```
 
-<b>例子:</b>
+<b>示例:</b>
 
 ```go
 import (

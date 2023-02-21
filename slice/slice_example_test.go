@@ -482,8 +482,72 @@ func ExampleDrop() {
 	// Output:
 	// [a b c]
 	// [b c]
-	// [a b]
+	// [a b c]
 	// []
+}
+
+func ExampleDropRight() {
+	result1 := DropRight([]string{"a", "b", "c"}, 0)
+	result2 := DropRight([]string{"a", "b", "c"}, 1)
+	result3 := DropRight([]string{"a", "b", "c"}, -1)
+	result4 := DropRight([]string{"a", "b", "c"}, 4)
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+	fmt.Println(result4)
+
+	// Output:
+	// [a b c]
+	// [a b]
+	// [a b c]
+	// []
+}
+
+func ExampleDropWhile() {
+	numbers := []int{1, 2, 3, 4, 5}
+
+	result1 := DropWhile(numbers, func(n int) bool {
+		return n != 2
+	})
+	result2 := DropWhile(numbers, func(n int) bool {
+		return true
+	})
+	result3 := DropWhile(numbers, func(n int) bool {
+		return n == 0
+	})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// [2 3 4 5]
+	// []
+	// [1 2 3 4 5]
+}
+
+func ExampleDropRightWhile() {
+	numbers := []int{1, 2, 3, 4, 5}
+
+	result1 := DropRightWhile(numbers, func(n int) bool {
+		return n != 2
+	})
+	result2 := DropRightWhile(numbers, func(n int) bool {
+		return true
+	})
+	result3 := DropRightWhile(numbers, func(n int) bool {
+		return n == 0
+	})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// [1 2]
+	// []
+	// [1 2 3 4 5]
 }
 
 func ExampleInsertAt() {
@@ -619,6 +683,75 @@ func ExampleReverse() {
 
 	// Output:
 	// [d c b a]
+}
+
+func ExampleIsAscending() {
+
+	result1 := IsAscending([]int{1, 2, 3, 4, 5})
+	result2 := IsAscending([]int{5, 4, 3, 2, 1})
+	result3 := IsAscending([]int{2, 1, 3, 4, 5})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// true
+	// false
+	// false
+}
+
+func ExampleIsDescending() {
+
+	result1 := IsDescending([]int{5, 4, 3, 2, 1})
+	result2 := IsDescending([]int{1, 2, 3, 4, 5})
+	result3 := IsDescending([]int{2, 1, 3, 4, 5})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// true
+	// false
+	// false
+}
+
+func ExampleIsSorted() {
+
+	result1 := IsSorted([]int{1, 2, 3, 4, 5})
+	result2 := IsSorted([]int{5, 4, 3, 2, 1})
+	result3 := IsSorted([]int{2, 1, 3, 4, 5})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// true
+	// true
+	// false
+}
+
+func ExampleIsSortedByKey() {
+	result1 := IsSortedByKey([]string{"a", "ab", "abc"}, func(s string) int {
+		return len(s)
+	})
+	result2 := IsSortedByKey([]string{"abc", "ab", "a"}, func(s string) int {
+		return len(s)
+	})
+	result3 := IsSortedByKey([]string{"abc", "a", "ab"}, func(s string) int {
+		return len(s)
+	})
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+
+	// Output:
+	// true
+	// true
+	// false
 }
 
 func ExampleSort() {
