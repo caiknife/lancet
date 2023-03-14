@@ -4,7 +4,11 @@
 // Package maputil includes some functions to manipulate map.
 package maputil
 
-import "reflect"
+import (
+	"reflect"
+
+	"github.com/duke-git/lancet/v2/slice"
+)
 
 // Keys returns a slice of the map's keys.
 // Play: https://go.dev/play/p/xNB5bTb97Wd
@@ -32,6 +36,30 @@ func Values[K comparable, V any](m map[K]V) []V {
 	}
 
 	return values
+}
+
+// KeysBy creates a slice whose element is the result of function mapper invoked by every map's key.
+// Play: https://go.dev/play/p/hI371iB8Up8
+func KeysBy[K comparable, V any, T any](m map[K]V, mapper func(item K) T) []T {
+	keys := make([]T, 0, len(m))
+
+	for k := range m {
+		keys = append(keys, mapper(k))
+	}
+
+	return keys
+}
+
+// ValuesBy creates a slice whose element is the result of function mapper invoked by every map's value.
+// Play: https://go.dev/play/p/sg9-oRidh8f
+func ValuesBy[K comparable, V any, T any](m map[K]V, mapper func(item V) T) []T {
+	keys := make([]T, 0, len(m))
+
+	for _, v := range m {
+		keys = append(keys, mapper(v))
+	}
+
+	return keys
 }
 
 // Merge maps, next key will overwrite previous key.
@@ -63,6 +91,71 @@ func Filter[K comparable, V any](m map[K]V, predicate func(key K, value V) bool)
 
 	for k, v := range m {
 		if predicate(k, v) {
+			result[k] = v
+		}
+	}
+	return result
+}
+
+// FilterByKeys iterates over map, return a new map whose keys are all given keys.
+// Play: https://go.dev/play/p/7ov6BJHbVqh
+func FilterByKeys[K comparable, V any](m map[K]V, keys []K) map[K]V {
+	result := make(map[K]V)
+
+	for k, v := range m {
+		if slice.Contain(keys, k) {
+			result[k] = v
+		}
+	}
+	return result
+}
+
+// FilterByValues iterates over map, return a new map whose values are all given values.
+// Play: https://go.dev/play/p/P3-9MdcXegR
+func FilterByValues[K comparable, V comparable](m map[K]V, values []V) map[K]V {
+	result := make(map[K]V)
+
+	for k, v := range m {
+		if slice.Contain(values, v) {
+			result[k] = v
+		}
+	}
+	return result
+}
+
+// OmitBy is the opposite of Filter, removes all the map elements for which the predicate function returns true.
+// Play: https://go.dev/play/p/YJM4Hj5hNwm
+func OmitBy[K comparable, V any](m map[K]V, predicate func(key K, value V) bool) map[K]V {
+	result := make(map[K]V)
+
+	for k, v := range m {
+		if !predicate(k, v) {
+			result[k] = v
+		}
+	}
+	return result
+}
+
+// OmitByKeys the opposite of FilterByKeys, extracts all the map elements which keys are not omitted.
+// Play: https://go.dev/play/p/jXGrWDBfSRp
+func OmitByKeys[K comparable, V any](m map[K]V, keys []K) map[K]V {
+	result := make(map[K]V)
+
+	for k, v := range m {
+		if !slice.Contain(keys, k) {
+			result[k] = v
+		}
+	}
+	return result
+}
+
+// OmitByValues the opposite of FilterByValues. remov all elements whose value are in the give slice.
+// Play: https://go.dev/play/p/XB7Y10uw20_U
+func OmitByValues[K comparable, V comparable](m map[K]V, values []V) map[K]V {
+	result := make(map[K]V)
+
+	for k, v := range m {
+		if !slice.Contain(values, v) {
 			result[k] = v
 		}
 	}
@@ -125,4 +218,74 @@ func IsDisjoint[K comparable, V any](mapA, mapB map[K]V) bool {
 		}
 	}
 	return true
+}
+
+// Entry is a key/value pairs.
+type Entry[K comparable, V any] struct {
+	Key   K
+	Value V
+}
+
+// Entries transforms a map into array of key/value pairs.
+// Play: https://go.dev/play/p/Ltb11LNcElY
+func Entries[K comparable, V any](m map[K]V) []Entry[K, V] {
+	entries := make([]Entry[K, V], 0, len(m))
+
+	for k, v := range m {
+		entries = append(entries, Entry[K, V]{
+			Key:   k,
+			Value: v,
+		})
+	}
+
+	return entries
+}
+
+// FromEntries creates a map based on a slice of key/value pairs
+// Play: https://go.dev/play/p/fTdu4sCNjQO
+func FromEntries[K comparable, V any](entries []Entry[K, V]) map[K]V {
+	result := make(map[K]V, len(entries))
+
+	for _, v := range entries {
+		result[v.Key] = v.Value
+	}
+
+	return result
+}
+
+// Transform a map to another type map.
+// Play: https://go.dev/play/p/P6ovfToM3zj
+func Transform[K1 comparable, V1 any, K2 comparable, V2 any](m map[K1]V1, iteratee func(key K1, value V1) (K2, V2)) map[K2]V2 {
+	result := make(map[K2]V2, len(m))
+
+	for k1, v1 := range m {
+		k2, v2 := iteratee(k1, v1)
+		result[k2] = v2
+	}
+
+	return result
+}
+
+// MapKeys transforms a map to other type map by manipulating it's keys.
+// Play: https://go.dev/play/p/8scDxWeBDKd
+func MapKeys[K comparable, V any, T comparable](m map[K]V, iteratee func(key K, value V) T) map[T]V {
+	result := make(map[T]V, len(m))
+
+	for k, v := range m {
+		result[iteratee(k, v)] = v
+	}
+
+	return result
+}
+
+// MapValues transforms a map to other type map by manipulating it's values.
+// Play: https://go.dev/play/p/g92aY3fc7Iw
+func MapValues[K comparable, V any, T any](m map[K]V, iteratee func(key K, value V) T) map[K]T {
+	result := make(map[K]T, len(m))
+
+	for k, v := range m {
+		result[k] = iteratee(k, v)
+	}
+
+	return result
 }

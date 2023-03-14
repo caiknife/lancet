@@ -9,10 +9,11 @@ import (
 	"encoding/binary"
 	"encoding/gob"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/duke-git/lancet/v2/structutil"
 	"math"
 	"reflect"
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -234,31 +235,7 @@ func ToMap[T any, K comparable, V any](array []T, iteratee func(T) (K, V)) map[K
 // map key is specified same as struct field tag `json` value.
 // Play: https://go.dev/play/p/KYGYJqNUBOI
 func StructToMap(value any) (map[string]any, error) {
-	v := reflect.ValueOf(value)
-	t := reflect.TypeOf(value)
-
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-	if t.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("data type %T not support, shuld be struct or pointer to struct", value)
-	}
-
-	result := make(map[string]any)
-
-	fieldNum := t.NumField()
-	pattern := `^[A-Z]`
-	regex := regexp.MustCompile(pattern)
-	for i := 0; i < fieldNum; i++ {
-		name := t.Field(i).Name
-		tag := t.Field(i).Tag.Get("json")
-		if regex.MatchString(name) && tag != "" {
-			//result[name] = v.Field(i).Interface()
-			result[tag] = v.Field(i).Interface()
-		}
-	}
-
-	return result, nil
+	return structutil.ToMap(value)
 }
 
 // MapToSlice convert map to slice based on iteratee function.
@@ -339,4 +316,47 @@ func DeepClone[T any](src T) T {
 	}
 
 	return result.Interface().(T)
+}
+
+// CopyProperties copies each field from the source into the destination. It recursively copies struct pointers and interfaces that contain struct pointers.
+// Play: https://go.dev/play/p/FOVY3XJL-6B
+func CopyProperties[T, U any](dst T, src U) (err error) {
+	defer func() {
+		if e := recover(); e != nil {
+			err = fmt.Errorf("%v", e)
+		}
+	}()
+
+	dstType, dstValue := reflect.TypeOf(dst), reflect.ValueOf(dst)
+	srcType, srcValue := reflect.TypeOf(src), reflect.ValueOf(src)
+
+	if dstType.Kind() != reflect.Ptr || dstType.Elem().Kind() != reflect.Struct {
+		return errors.New("CopyProperties: param dst should be struct pointer")
+	}
+
+	if srcType.Kind() == reflect.Ptr {
+		srcType, srcValue = srcType.Elem(), srcValue.Elem()
+	}
+	if srcType.Kind() != reflect.Struct {
+		return errors.New("CopyProperties: param src should be a struct or struct pointer")
+	}
+
+	dstType, dstValue = dstType.Elem(), dstValue.Elem()
+
+	propertyNums := dstType.NumField()
+
+	for i := 0; i < propertyNums; i++ {
+		property := dstType.Field(i)
+		propertyValue := srcValue.FieldByName(property.Name)
+
+		if !propertyValue.IsValid() || property.Type != propertyValue.Type() {
+			continue
+		}
+
+		if dstValue.Field(i).CanSet() {
+			dstValue.Field(i).Set(propertyValue)
+		}
+	}
+
+	return nil
 }

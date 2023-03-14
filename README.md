@@ -4,7 +4,7 @@
 <br/>
 
 ![Go version](https://img.shields.io/badge/go-%3E%3Dv1.18-9cf)
-[![Release](https://img.shields.io/badge/release-2.1.15-green.svg)](https://github.com/duke-git/lancet/releases)
+[![Release](https://img.shields.io/badge/release-2.1.16-green.svg)](https://github.com/duke-git/lancet/releases)
 [![GoDoc](https://godoc.org/github.com/duke-git/lancet/v2?status.svg)](https://pkg.go.dev/github.com/duke-git/lancet/v2)
 [![Go Report Card](https://goreportcard.com/badge/github.com/duke-git/lancet/v2)](https://goreportcard.com/report/github.com/duke-git/lancet/v2)
 [![test](https://github.com/duke-git/lancet/actions/workflows/codecov.yml/badge.svg?branch=main&event=push)](https://github.com/duke-git/lancet/actions/workflows/codecov.yml)
@@ -38,10 +38,10 @@ English | [简体中文](./README_zh-CN.md)
 go get github.com/duke-git/lancet/v2 // will install latest version of v2.x.x
 ```
 
-2. <b>For users who use version below go1.18, you should install v1.x.x. The latest of v1.x.x is v1.3.6. </b>
+2. <b>For users who use version below go1.18, you should install v1.x.x. The latest of v1.x.x is v1.3.7. </b>
 
 ```go
-go get github.com/duke-git/lancet@v1.3.6 // below go1.18, install latest version of v1.x.x
+go get github.com/duke-git/lancet@v1.3.7 // below go1.18, install latest version of v1.x.x
 ```
 
 ## Usage
@@ -249,7 +249,9 @@ import "github.com/duke-git/lancet/v2/convertor"
 -   **<big>DeepClone</big>** : creates a deep copy of passed item, can't clone unexported field of struct.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/convertor.md#DeepClone)]
     [[play](https://go.dev/play/p/j4DP5dquxnk)]
-
+-   **<big>CopyProperties</big>** : copies each field from the source struct into the destination struct.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/convertor.md#CopyProperties)]
+    [[play](https://go.dev/play/p/FOVY3XJL-6B)]
 
 ### 5. Cryptor package is for data encryption and decryption.
 
@@ -454,9 +456,6 @@ import "github.com/duke-git/lancet/v2/datetime"
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/datetime.md#ToIso8601)]
     [[play](https://go.dev/play/p/mkhOHQkdeA2)]
 
-
-
-
 ### 7. Datastructure package constains some common data structure. eg. list, linklist, stack, queue, set, tree, graph.
 
 ```go
@@ -591,7 +590,6 @@ import "github.com/duke-git/lancet/v2/function"
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/function.md#Watcher)]
     [[play](https://go.dev/play/p/l2yrOpCLd1I)]
 
-
 ### 11. Maputil package includes some functions to manipulate map.
 
 ```go
@@ -606,12 +604,30 @@ import "github.com/duke-git/lancet/v2/maputil"
 -   **<big>Filter</big>** : iterates over map, return a new map contains all key and value pairs pass the predicate function.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#Filter)]
     [[play](https://go.dev/play/p/fSvF3wxuNG7)]
+-   **<big>FilterByKeys</big>** : iterates over map, return a new map whose keys are all given keys
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#FilterByKeys)]
+    [[play](https://go.dev/play/p/7ov6BJHbVqh)]
+-   **<big>FilterByValues</big>** : iterates over map, return a new map whose values are all given values.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#FilterByValues)]
+    [[play](https://go.dev/play/p/P3-9MdcXegR)]
+-   **<big>OmitBy</big>** : the opposite of Filter, removes all the map elements for which the predicate function returns true.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#OmitBy)]
+    [[play](https://go.dev/play/p/YJM4Hj5hNwm)]
+-   **<big>OmitByKeys</big>** : the opposite of FilterByKeys, extracts all the map elements which keys are not omitted.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#OmitByKeys)]
+    [[play](https://go.dev/play/p/jXGrWDBfSRp)]
+-   **<big>OmitByValues</big>** : the opposite of FilterByValues. remov all elements whose value are in the give slice.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#OmitByValues)]
+    [[play](https://go.dev/play/p/XB7Y10uw20_U)]
 -   **<big>Intersect</big>** : iterates over maps, return a new map of key and value pairs in all given maps.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#Intersect)]
     [[play](https://go.dev/play/p/Zld0oj3sjcC)]
 -   **<big>Keys</big>** : returns a slice of the map's keys.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#Keys)]
     [[play](https://go.dev/play/p/xNB5bTb97Wd)]
+-   **<big>KeysBy</big>** : creates a slice whose element is the result of function mapper invoked by every map's key.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#KeysBy)]
+    [[play](https://go.dev/play/p/hI371iB8Up8)]
 -   **<big>Merge</big>** : merge maps, next key will overwrite previous key.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#Merge)]
     [[play](https://go.dev/play/p/H95LENF1uB-)]
@@ -621,6 +637,24 @@ import "github.com/duke-git/lancet/v2/maputil"
 -   **<big>Values</big>** : returns a slice of the map's values.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#Values)]
     [[play](https://go.dev/play/p/CBKdUc5FTW6)]
+-   **<big>ValuesBy</big>** : creates a slice whose element is the result of function mapper invoked by every map's value.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#ValuesBy)]
+    [[play](https://go.dev/play/p/sg9-oRidh8f)]
+-   **<big>MapKeys</big>** : transforms a map to other type map by manipulating it's keys.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#MapKeys)]
+    [[play](https://go.dev/play/p/8scDxWeBDKd)]
+-   **<big>MapValues</big>** : transforms a map to other type map by manipulating it's values.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#MapValues)]
+    [[play](https://go.dev/play/p/g92aY3fc7Iw)]
+-   **<big>Entries</big>** : transforms a map into array of key/value pairs.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#Entries)]
+    [[play](https://go.dev/play/p/Ltb11LNcElY)]
+-   **<big>FromEntries</big>** : creates a map based on a slice of key/value pairs.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#FromEntries)]
+    [[play](https://go.dev/play/p/fTdu4sCNjQO)]
+-   **<big>Transform</big>** : transform a map to another type map.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#Transform)]
+    [[play](https://go.dev/play/p/P6ovfToM3zj)]
 -   **<big>IsDisjoint</big>** : check two map are disjoint if they have no keys in common.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/maputil.md#IsDisjoint)]
     [[play](https://go.dev/play/p/N9qgYg_Ho6f)]
@@ -733,8 +767,6 @@ import "github.com/duke-git/lancet/v2/netutil"
 -   **<big>ParseHttpResponse</big>** : decode http response into target object.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/netutil.md#ParseHttpResponse)]
 
-
-
 ### 14. Random package implements some basic functions to generate random int and string.
 
 ```go
@@ -806,6 +838,9 @@ import "github.com/duke-git/lancet/v2/slice"
 -   **<big>Contain</big>** : check if the value is in the slice or not.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#Contain)]
     [[play](https://go.dev/play/p/_454yEHcNjf)]
+-   **<big>ContainBy</big>** : returns true if predicate function return true.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#ContainBy)]
+    [[play](https://go.dev/play/p/49tkHfX4GNc)]
 -   **<big>ContainSubSlice</big>** : check if the slice contain a given subslice or not.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#ContainSubSlice)]
     [[play](https://go.dev/play/p/bcuQ3UT6Sev)]
@@ -860,6 +895,9 @@ import "github.com/duke-git/lancet/v2/slice"
 -   **<big>Filter</big>** : iterates over elements of slice, returning an slice of all elements pass the predicate function.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#Filter)]
     [[play](https://go.dev/play/p/SdPna-7qK4T)]
+-   **<big>FilterMap</big>** : returns a slice which apply both filtering and mapping to the given slice.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#FilterMap)]
+    [[play](https://go.dev/play/p/J94SZ_9MiIe)]
 -   **<big>Find</big>** : iterates over elements of slice, returning the first one that passes a truth test on predicate function.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#Find)]
     [[play](https://go.dev/play/p/CBKeBoHVLgq)]
@@ -872,6 +910,9 @@ import "github.com/duke-git/lancet/v2/slice"
 -   **<big>FlattenDeep</big>** : flattens slice recursive to one level.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#FlattenDeep)]
     [[play](https://go.dev/play/p/yjYNHPyCFaF)]
+-   **<big>FlatMap</big>** : manipulates a slice and transforms and flattens it to a slice of another type.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#FlatMap)]
+    [[play](https://go.dev/play/p/_QARWlWs1N_F)]
 -   **<big>ForEach</big>** : iterates over elements of slice and invokes function for each element.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/slice.md#ForEach)]
     [[play](https://go.dev/play/p/DrPaa4YsHRF)]
@@ -1021,6 +1062,9 @@ import "github.com/duke-git/lancet/v2/strutil"
 -   **<big>UpperFirst</big>** : converts the first character of string to upper case.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/strutil.md#UpperFirst)]
     [[play](https://go.dev/play/p/sBbBxRbs8MM)]
+-   **<big>Pad</big>** : pads string on the left and right side if it's shorter than size.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/strutil.md#Pad)]
+    [[play](https://go.dev/play/p/NzImQq-VF8q)]
 -   **<big>PadEnd</big>** : pads string with given characters on the right side if it's shorter than limit size. Padding characters are truncated if they exceed size.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/strutil.md#PadEnd)]
     [[play](https://go.dev/play/p/9xP8rN0vz--)]
@@ -1048,6 +1092,12 @@ import "github.com/duke-git/lancet/v2/strutil"
 -   **<big>Unwrap</big>** : unwrap a given string from anther string. will change source string.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/strutil.md#Unwrap)]
     [[play](https://go.dev/play/p/Ec2q4BzCpG-)]
+-   **<big>SplitWords</big>** : splits a string into words, word only contains alphabetic characters.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/strutil.md#SplitWords)]
+    [[play](https://go.dev/play/p/KLiX4WiysMM)]
+-   **<big>WordCount</big>** : return the number of meaningful word of a string, word only contains alphabetic characters.
+    [[doc](https://github.com/duke-git/lancet/blob/main/docs/strutil.md#WordCount)]
+    [[play](https://go.dev/play/p/bj7_odx3vRf)]
 
 ### 19. System package contain some functions about os, runtime, shell command.
 
@@ -1185,6 +1235,7 @@ import "github.com/duke-git/lancet/v2/xerror"
 ```
 
 #### Function list:
+
 -   **<big>New</big>** : creates a new XError pointer instance with message.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#New)]
     [[play](https://go.dev/play/p/w4oWZts7q7f)]
@@ -1209,7 +1260,7 @@ import "github.com/duke-git/lancet/v2/xerror"
 -   **<big>XError_Is</big>** : checks if target error is XError and Error.id of two errors are matched.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Is)]
     [[play](https://go.dev/play/p/X6HBlsy58U9)]
--   **<big>XError_Values</big>** : returns map of key and value that is set by XError.With function. 
+-   **<big>XError_Values</big>** : returns map of key and value that is set by XError.With function.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#XError_Values)]
     [[play](https://go.dev/play/p/ow8UISXX_Dp)]
 -   **<big>XError_StackTrace</big>** : returns stack trace which is compatible with pkg/errors.
@@ -1224,7 +1275,6 @@ import "github.com/duke-git/lancet/v2/xerror"
 -   **<big>TryUnwrap</big>** : check if err is nil then it returns a valid value. If err is not nil, TryUnwrap panics with err.
     [[doc](https://github.com/duke-git/lancet/blob/main/docs/xerror.md#TryUnwrap)]
     [[play](https://go.dev/play/p/acyZVkNZEeW)]
-
 
 ## How to Contribute
 

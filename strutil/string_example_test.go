@@ -186,6 +186,33 @@ func ExampleUpperFirst() {
 	// Bar大
 }
 
+func ExamplePad() {
+	result1 := Pad("foo", 1, "bar")
+	result2 := Pad("foo", 2, "bar")
+	result3 := Pad("foo", 3, "bar")
+	result4 := Pad("foo", 4, "bar")
+	result5 := Pad("foo", 5, "bar")
+	result6 := Pad("foo", 6, "bar")
+	result7 := Pad("foo", 7, "bar")
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+	fmt.Println(result4)
+	fmt.Println(result5)
+	fmt.Println(result6)
+	fmt.Println(result7)
+
+	// Output:
+	// foo
+	// foo
+	// foo
+	// foob
+	// bfoob
+	// bfooba
+	// bafooba
+}
+
 func ExamplePadEnd() {
 	result1 := PadEnd("foo", 1, "bar")
 	result2 := PadEnd("foo", 2, "bar")
@@ -360,4 +387,54 @@ func ExampleSubstring() {
 	// de
 	// de
 	// 你好
+}
+
+func ExampleSplitWords() {
+
+	result1 := SplitWords("a word")
+	result2 := SplitWords("I'am a programmer")
+	result3 := SplitWords("Bonjour, je suis programmeur")
+	result4 := SplitWords("a -b-c' 'd'e")
+	result5 := SplitWords("你好，我是一名码农")
+	result6 := SplitWords("こんにちは，私はプログラマーです")
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+	fmt.Println(result4)
+	fmt.Println(result5)
+	fmt.Println(result6)
+
+	// Output:
+	// [a word]
+	// [I'am a programmer]
+	// [Bonjour je suis programmeur]
+	// [a b-c' d'e]
+	// []
+	// []
+}
+
+func ExampleWordCount() {
+
+	result1 := WordCount("a word")
+	result2 := WordCount("I'am a programmer")
+	result3 := WordCount("Bonjour, je suis programmeur")
+	result4 := WordCount("a -b-c' 'd'e")
+	result5 := WordCount("你好，我是一名码农")
+	result6 := WordCount("こんにちは，私はプログラマーです")
+
+	fmt.Println(result1)
+	fmt.Println(result2)
+	fmt.Println(result3)
+	fmt.Println(result4)
+	fmt.Println(result5)
+	fmt.Println(result6)
+
+	// Output:
+	// 2
+	// 3
+	// 4
+	// 3
+	// 0
+	// 0
 }

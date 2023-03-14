@@ -33,8 +33,9 @@ import (
 -   [UpperKebabCase](#UpperKebabCase)
 -   [LowerFirst](#LowerFirst)
 -   [UpperFirst](#UpperFirst)
--   [PadEnd](#PadEnd)
+-   [Pad](#Pad)
 -   [PadStart](#PadStart)
+-   [PadEnd](#PadEnd)
 -   [Reverse](#Reverse)
 -   [SnakeCase](#SnakeCase)
 -   [UpperSnakeCase](#UpperSnakeCase)
@@ -42,6 +43,8 @@ import (
 -   [Substring](#Substring)
 -   [Wrap](#Wrap)
 -   [Unwrap](#Unwrap)
+-   [SplitWords](#SplitWords)
+-   [WordCount](#WordCount)
 
 <div STYLE="page-break-after: always;"></div>
 
@@ -449,6 +452,51 @@ func main() {
 }
 ```
 
+### <span id="Pad">Pad</span>
+
+<p>Pads string on the left and right side if it's shorter than size.</p>
+
+<b>Signature:</b>
+
+```go
+func Pad(source string, size int, padStr string) string
+```
+
+<b>Example:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/strutil"
+)
+
+func main() {
+    result1 := strutil.Pad("foo", 1, "bar")
+    result2 := strutil.Pad("foo", 2, "bar")
+    result3 := strutil.Pad("foo", 3, "bar")
+    result4 := strutil.Pad("foo", 4, "bar")
+    result5 := strutil.Pad("foo", 5, "bar")
+    result6 := strutil.Pad("foo", 6, "bar")
+    result7 := strutil.Pad("foo", 7, "bar")
+
+    fmt.Println(result1)
+    fmt.Println(result2)
+    fmt.Println(result3)
+    fmt.Println(result4)
+    fmt.Println(result5)
+    fmt.Println(result6)
+    fmt.Println(result7)
+    // Output:
+    // foo
+    // foo
+    // foo
+    // foob
+    // bfoob
+    // bfooba
+    // bafooba
+}
+```
+
 ### <span id="PadEnd">PadEnd</span>
 
 <p>Pads string on the right side if it's shorter than size.</p>
@@ -800,5 +848,93 @@ func main() {
     // *foo
     // foo*
     // *foo*
+}
+```
+
+
+### <span id="SplitWords">SplitWords</span>
+
+<p>Splits a string into words, word only contains alphabetic characters.</p>
+
+<b>Signature:</b>
+
+```go
+func SplitWords(s string) []string
+```
+
+<b>Example:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/strutil"
+)
+
+func main() {
+    result1 := strutil.SplitWords("a word")
+    result2 := strutil.SplitWords("I'am a programmer")
+    result3 := strutil.SplitWords("Bonjour, je suis programmeur")
+    result4 := strutil.SplitWords("a -b-c' 'd'e")
+    result5 := strutil.SplitWords("你好，我是一名码农")
+    result6 := strutil.SplitWords("こんにちは，私はプログラマーです")
+
+    fmt.Println(result1)
+    fmt.Println(result2)
+    fmt.Println(result3)
+    fmt.Println(result4)
+    fmt.Println(result5)
+    fmt.Println(result6)
+
+    // Output:
+    // [a word]
+    // [I'am a programmer]
+    // [Bonjour je suis programmeur]
+    // [a b-c' d'e]
+    // []
+    // []
+}
+```
+
+
+### <span id="WordCount">WordCount</span>
+
+<p>Return the number of meaningful word, word only contains alphabetic characters.</p>
+
+<b>Signature:</b>
+
+```go
+func WordCount(s string) int
+```
+
+<b>Example:</b>
+
+```go
+import (
+    "fmt"
+    "github.com/duke-git/lancet/v2/strutil"
+)
+
+func main() {
+    result1 := strutil.WordCount("a word")
+    result2 := strutil.WordCount("I'am a programmer")
+    result3 := strutil.WordCount("Bonjour, je suis programmeur")
+    result4 := strutil.WordCount("a -b-c' 'd'e")
+    result5 := strutil.WordCount("你好，我是一名码农")
+    result6 := strutil.WordCount("こんにちは，私はプログラマーです")
+
+    fmt.Println(result1)
+    fmt.Println(result2)
+    fmt.Println(result3)
+    fmt.Println(result4)
+    fmt.Println(result5)
+    fmt.Println(result6)
+
+    // Output:
+    // 2
+    // 3
+    // 4
+    // 3
+    // 0
+    // 0
 }
 ```

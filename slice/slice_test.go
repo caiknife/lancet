@@ -3,6 +3,7 @@ package slice
 import (
 	"fmt"
 	"math"
+	"strconv"
 	"testing"
 
 	"github.com/duke-git/lancet/v2/internal"
@@ -17,6 +18,28 @@ func TestContain(t *testing.T) {
 	assert.Equal(false, Contain([]string{}, ""))
 
 	assert.Equal(true, Contain([]int{1, 2, 3}, 1))
+}
+
+func TestContainBy(t *testing.T) {
+	assert := internal.NewAssert(t, "TestContainBy")
+
+	type foo struct {
+		A string
+		B int
+	}
+
+	array1 := []foo{{A: "1", B: 1}, {A: "2", B: 2}}
+	result1 := ContainBy(array1, func(f foo) bool { return f.A == "1" && f.B == 1 })
+	result2 := ContainBy(array1, func(f foo) bool { return f.A == "2" && f.B == 1 })
+
+	array2 := []string{"a", "b", "c"}
+	result3 := ContainBy(array2, func(t string) bool { return t == "a" })
+	result4 := ContainBy(array2, func(t string) bool { return t == "d" })
+
+	assert.Equal(true, result1)
+	assert.Equal(false, result2)
+	assert.Equal(true, result3)
+	assert.Equal(false, result4)
 }
 
 func TestContainSubSlice(t *testing.T) {
@@ -313,6 +336,36 @@ func TestMap(t *testing.T) {
 	}
 
 	assert.Equal(studentsOfAdd10Aage, Map(students, mapFunc))
+}
+
+func TestFilterMap(t *testing.T) {
+	assert := internal.NewAssert(t, "TestFilterMap")
+
+	nums := []int{1, 2, 3, 4, 5}
+
+	getEvenNumStr := func(i, num int) (string, bool) {
+		if num%2 == 0 {
+			return strconv.FormatInt(int64(num), 10), true
+		}
+		return "", false
+	}
+
+	result := FilterMap(nums, getEvenNumStr)
+
+	assert.Equal([]string{"2", "4"}, result)
+}
+
+func TestFlatMap(t *testing.T) {
+	assert := internal.NewAssert(t, "TestFlatMap")
+
+	nums := []int{1, 2, 3, 4}
+
+	result := FlatMap(nums, func(i int, num int) []string {
+		s := "hi-" + strconv.FormatInt(int64(num), 10)
+		return []string{s}
+	})
+
+	assert.Equal([]string{"hi-1", "hi-2", "hi-3", "hi-4"}, result)
 }
 
 func TestReduce(t *testing.T) {

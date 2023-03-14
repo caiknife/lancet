@@ -255,12 +255,12 @@ func ExampleDecodeByte() {
 
 func ExampleDeepClone() {
 	type Struct struct {
-		Str        string
-		Int        int
-		Float      float64
-		Bool       bool
-		Nil        interface{}
-		unexported string
+		Str   string
+		Int   int
+		Float float64
+		Bool  bool
+		Nil   interface{}
+		// unexported string
 	}
 
 	cases := []interface{}{
@@ -293,5 +293,53 @@ func ExampleDeepClone() {
 	// 1 false
 	// 0.1 false
 	// map[a:1 b:2] false
-	// &{test 1 0.1 true <nil> } false
+	// &{test 1 0.1 true <nil>} false
+}
+
+func ExampleCopyProperties() {
+	type Address struct {
+		Country string
+		ZipCode string
+	}
+
+	type User struct {
+		Name   string
+		Age    int
+		Role   string
+		Addr   Address
+		Hobbys []string
+		salary int
+	}
+
+	type Employee struct {
+		Name   string
+		Age    int
+		Role   string
+		Addr   Address
+		Hobbys []string
+		salary int
+	}
+
+	user := User{Name: "user001", Age: 10, Role: "Admin", Addr: Address{Country: "CN", ZipCode: "001"}, Hobbys: []string{"a", "b"}, salary: 1000}
+
+	employee1 := Employee{}
+	err := CopyProperties(&employee1, &user)
+	if err != nil {
+		return
+	}
+
+	employee2 := Employee{Name: "employee001", Age: 20, Role: "User",
+		Addr: Address{Country: "UK", ZipCode: "002"}, salary: 500}
+
+	err = CopyProperties(&employee2, &user)
+	if err != nil {
+		return
+	}
+
+	fmt.Println(employee1)
+	fmt.Println(employee2)
+
+	// Output:
+	// {user001 10 Admin {CN 001} [a b] 0}
+	// {user001 10 Admin {CN 001} [a b] 500}
 }

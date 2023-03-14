@@ -29,6 +29,7 @@ import (
 -   [Compose](#Compose)
 -   [Debounced](#Debounced)
 -   [Delay](#Delay)
+-   [Schedule](#Schedule)
 -   [Pipeline](#Pipeline)
 -   [Watcher](#Watcher)
 
@@ -206,7 +207,7 @@ import (
 
 func main() {
     count := 0
-    
+
     add := func() {
         count++
     }

@@ -180,18 +180,36 @@ func TestToMap(t *testing.T) {
 func TestStructToMap(t *testing.T) {
 	assert := internal.NewAssert(t, "TestStructToMap")
 
-	type People struct {
-		Name string `json:"name"`
-		age  int
-	}
-	p := People{
-		"test",
-		100,
-	}
-	pm, _ := StructToMap(p)
+	t.Run("StructToMap", func(_ *testing.T) {
+		type People struct {
+			Name string `json:"name"`
+			age  int
+		}
+		p := People{
+			"test",
+			100,
+		}
+		pm, _ := StructToMap(p)
+		var expected = map[string]any{"name": "test"}
+		assert.Equal(expected, pm)
+	})
 
-	expected := map[string]any{"name": "test"}
-	assert.Equal(expected, pm)
+	t.Run("StructToMapWithJsonAttr", func(_ *testing.T) {
+		type People struct {
+			Name  string `json:"name,omitempty"` // json tag with attribute
+			Phone string `json:"phone"`          // json tag without attribute
+			Sex   string `json:"-"`              // ignore
+			age   int    // no tag
+		}
+		p := People{
+			Phone: "1111",
+			Sex:   "male",
+			age:   100,
+		}
+		pm, _ := StructToMap(p)
+		var expected = map[string]any{"phone": "1111"}
+		assert.Equal(expected, pm)
+	})
 }
 
 func TestMapToSlice(t *testing.T) {
@@ -259,12 +277,12 @@ func TestDeepClone(t *testing.T) {
 	// assert := internal.NewAssert(t, "TestDeepClone")
 
 	type Struct struct {
-		Str        string
-		Int        int
-		Float      float64
-		Bool       bool
-		Nil        interface{}
-		unexported string
+		Str   string
+		Int   int
+		Float float64
+		Bool  bool
+		Nil   interface{}
+		// unexported string
 	}
 
 	cases := []interface{}{
@@ -297,4 +315,54 @@ func TestDeepClone(t *testing.T) {
 			t.Fatalf("[TestDeepClone case #%d failed] unequal objects", i)
 		}
 	}
+}
+
+func TestCopyProperties(t *testing.T) {
+	assert := internal.NewAssert(t, "TestCopyProperties")
+
+	type Address struct {
+		Country string
+		ZipCode string
+	}
+
+	type User struct {
+		Name   string
+		Age    int
+		Role   string
+		Addr   Address
+		Hobbys []string
+		salary int
+	}
+
+	type Employee struct {
+		Name   string
+		Age    int
+		Role   string
+		Addr   Address
+		Hobbys []string
+		salary int
+	}
+
+	user := User{Name: "user001", Age: 10, Role: "Admin", Addr: Address{Country: "CN", ZipCode: "001"}, Hobbys: []string{"a", "b"}, salary: 1000}
+
+	employee1 := Employee{}
+
+	err := CopyProperties(&employee1, &user)
+
+	assert.IsNil(err)
+	assert.Equal("user001", employee1.Name)
+	assert.Equal("Admin", employee1.Role)
+	assert.Equal("CN", employee1.Addr.Country)
+	assert.Equal(0, employee1.salary)
+
+	employee2 := Employee{Name: "employee001", Age: 20, Role: "User",
+		Addr: Address{Country: "UK", ZipCode: "002"}, salary: 500}
+
+	err = CopyProperties(&employee2, &user)
+
+	assert.IsNil(err)
+	assert.Equal("user001", employee2.Name)
+	assert.Equal("Admin", employee2.Role)
+	assert.Equal("CN", employee2.Addr.Country)
+	assert.Equal(500, employee2.salary)
 }

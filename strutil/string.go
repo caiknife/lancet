@@ -67,44 +67,25 @@ func LowerFirst(s string) string {
 	return string(r) + s[size:]
 }
 
-// PadEnd pads string on the right side if it's shorter than size.
+// PadStart pads string on the left and right side if it's shorter than size.
 // Padding characters are truncated if they exceed size.
-// Play: https://go.dev/play/p/9xP8rN0vz--
-func PadEnd(source string, size int, padStr string) string {
-	len1 := len(source)
-	len2 := len(padStr)
-
-	if len1 >= size {
-		return source
-	}
-
-	fill := ""
-	if len2 >= size-len1 {
-		fill = padStr[0 : size-len1]
-	} else {
-		fill = strings.Repeat(padStr, size-len1)
-	}
-	return source + fill[0:size-len1]
+// Play: https://go.dev/play/p/NzImQq-VF8q
+func Pad(source string, size int, padStr string) string {
+	return padAtPosition(source, size, padStr, 0)
 }
 
 // PadStart pads string on the left side if it's shorter than size.
 // Padding characters are truncated if they exceed size.
 // Play: https://go.dev/play/p/xpTfzArDfvT
 func PadStart(source string, size int, padStr string) string {
-	len1 := len(source)
-	len2 := len(padStr)
+	return padAtPosition(source, size, padStr, 1)
+}
 
-	if len1 >= size {
-		return source
-	}
-
-	fill := ""
-	if len2 >= size-len1 {
-		fill = padStr[0 : size-len1]
-	} else {
-		fill = strings.Repeat(padStr, size-len1)
-	}
-	return fill[0:size-len1] + source
+// PadEnd pads string on the right side if it's shorter than size.
+// Padding characters are truncated if they exceed size.
+// Play: https://go.dev/play/p/9xP8rN0vz--
+func PadEnd(source string, size int, padStr string) string {
+	return padAtPosition(source, size, padStr, 2)
 }
 
 // KebabCase coverts string to kebab-case, non letters and numbers will be ignored.
@@ -305,4 +286,77 @@ func Substring(s string, offset int, length uint) string {
 	str := string(rs[offset : offset+int(length)])
 
 	return strings.Replace(str, "\x00", "", -1)
+}
+
+// SplitWords splits a string into words, word only contains alphabetic characters.
+// Play: https://go.dev/play/p/KLiX4WiysMM
+func SplitWords(s string) []string {
+	var word string
+	var words []string
+	var r rune
+	var size, pos int
+
+	isWord := false
+
+	for len(s) > 0 {
+		r, size = utf8.DecodeRuneInString(s)
+
+		switch {
+		case isLetter(r):
+			if !isWord {
+				isWord = true
+				word = s
+				pos = 0
+			}
+
+		case isWord && (r == '\'' || r == '-'):
+			// is word
+
+		default:
+			if isWord {
+				isWord = false
+				words = append(words, word[:pos])
+			}
+		}
+
+		pos += size
+		s = s[size:]
+	}
+
+	if isWord {
+		words = append(words, word[:pos])
+	}
+
+	return words
+}
+
+// WordCount return the number of meaningful word, word only contains alphabetic characters.
+// Play: https://go.dev/play/p/bj7_odx3vRf
+func WordCount(s string) int {
+	var r rune
+	var size, count int
+
+	isWord := false
+
+	for len(s) > 0 {
+		r, size = utf8.DecodeRuneInString(s)
+
+		switch {
+		case isLetter(r):
+			if !isWord {
+				isWord = true
+				count++
+			}
+
+		case isWord && (r == '\'' || r == '-'):
+			// is word
+
+		default:
+			isWord = false
+		}
+
+		s = s[size:]
+	}
+
+	return count
 }

@@ -33,6 +33,18 @@ func Contain[T comparable](slice []T, target T) bool {
 	return false
 }
 
+// ContainBy returns true if predicate function return true.
+// Play: https://go.dev/play/p/49tkHfX4GNc
+func ContainBy[T any](slice []T, predicate func(item T) bool) bool {
+	for _, item := range slice {
+		if predicate(item) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // ContainSubSlice check if the slice contain a given subslice or not.
 // Play: https://go.dev/play/p/bcuQ3UT6Sev
 func ContainSubSlice[T comparable](slice, subSlice []T) bool {
@@ -416,6 +428,35 @@ func Map[T any, U any](slice []T, iteratee func(index int, item T) U) []U {
 
 	for i, v := range slice {
 		result[i] = iteratee(i, v)
+	}
+
+	return result
+}
+
+// FilterMap returns a slice which apply both filtering and mapping to the given slice.
+// iteratee callback function should returntwo values:
+// 1, mapping result.
+// 2, whether the result element should be included or not
+// Play: https://go.dev/play/p/J94SZ_9MiIe
+func FilterMap[T any, U any](slice []T, iteratee func(index int, item T) (U, bool)) []U {
+	result := []U{}
+
+	for i, v := range slice {
+		if a, ok := iteratee(i, v); ok {
+			result = append(result, a)
+		}
+	}
+
+	return result
+}
+
+// FlatMap manipulates a slice and transforms and flattens it to a slice of another type.
+// Play: https://go.dev/play/p/_QARWlWs1N_F
+func FlatMap[T any, U any](slice []T, iteratee func(index int, item T) []U) []U {
+	result := make([]U, 0, len(slice))
+
+	for i, v := range slice {
+		result = append(result, iteratee(i, v)...)
 	}
 
 	return result
